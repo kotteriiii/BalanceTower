@@ -1,23 +1,16 @@
 using UnityEngine;
 
-public class block : MonoBehaviour
+public class Block : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-       
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        // ‚±‚±‚Å‚Í“Á‚É‰½‚à‚µ‚Ü‚¹‚ñ
     }
-
-    public void Drop()
-    {
-        gameObject.SetActive(false);
-    }
-
 }
