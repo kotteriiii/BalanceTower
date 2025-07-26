@@ -1,0 +1,10 @@
+# まずすべてを無視（ルートの全ファイル・フォルダ）
+*
+
+# .gitignore 自体は含める
+!.gitignore
+
+# Assets/Scripts フォルダと中身だけ許可
+!Assets/
+!Assets/Scripts/
+!Assets/Scripts/**
