@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
     private float stopTimer = 0f; //停止判定に使う
     public float stopTimeRequired = 2f; // 停止判定の閾値
 
+    public bool isGameOver = false; // ゲームオーバー状態かどうか
     private bool isFastForwarding = false; // 倍速状態かどうか
 
     void Awake()
@@ -58,15 +59,19 @@ public class GameManager : MonoBehaviour
         BlockSpawner.Instance.GenerateNextBlock();
 
         // ゲーム開始時にブロックを1つ生成
+        isGameOver = false;
         SpawnNextBlock();
     }
 
     void Update()
     {
-        CheckGameOver(); // ゲームオーバー判定
+        if (!isGameOver)
+        {
+            CheckGameOver(); // ゲームオーバー判定
+        }
 
         // 全てのブロックが停止しているかチェック
-        if (BlockManager.Instance.AreAllBlocksStopped())
+        if (BlockManager.Instance.AreAllBlocksStopped() && !isGameOver)
         {
             stopTimer += Time.deltaTime;
 
@@ -137,6 +142,8 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
+        isGameOver = true; // ゲームオーバー状態にする
+
         // 今回の記録が高ければハイスコアを更新
         if (blockCount > highScore)
         {
@@ -147,21 +154,16 @@ public class GameManager : MonoBehaviour
         BGMManager.Instance.PlayBGM(gameOverBGM); // ゲームオーバー時のBGMを再生
         resultText.text = $"あなたの記録は{blockCount}個です！"; // ゲームオーバー時のブロック数を表示
         gameOverCanvas.SetActive(true); // ゲームオーバーパネルを表示
-        Time.timeScale = 0f; // ゲームを停止する
     }
 
     // ゲームオーバー後にリトライするメソッド
     public void RetryGame()
     {
-        Time.timeScale = 1f;
-
         // シングルトン破棄（無いとリトライしてもstartメソッドが呼ばれない）
         Destroy(gameObject);
 
         Scene currentScene = SceneManager.GetActiveScene();
         SceneManager.LoadScene(currentScene.name);
     }
-
-
 
 }
